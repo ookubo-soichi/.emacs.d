@@ -3,7 +3,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(cua-mode t nil (cua-base)))
+ '(cua-mode t nil (cua-base))
+ '(package-selected-packages
+   (quote
+    (elpy ac-mozc mozc-im mozc-popup mozc shell-pop multi-term))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -29,7 +32,7 @@
             (normal-top-level-add-subdirs-to-load-path))))))
 
 ;; 引数のディレクトリとそのサブディレクトリをload-pathに追加
-(add-to-load-path "elisp" "conf" "public_repos")
+(add-to-load-path "elisp" "conf" "public_repos" "elpa")
 
 ;; ?\C-?はDELのキーシケンス
 (keyboard-translate ?\C-h ?\C-?)
@@ -41,6 +44,10 @@
 (set-language-environment "Japanese")
 (setq default-input-method "japanese-mozc")
 (prefer-coding-system 'utf-8)
+(require 'mozc-popup)
+(setq mozc-candidate-style 'popup)
+(require 'ac-mozc)
+(define-key ac-mode-map (kbd "C-c C-\\") 'ac-complete-mozc)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; フレームに関する設定                               ;;
@@ -76,17 +83,23 @@
 
 ;(setq shell-pop-shell-type '("terminal" "*terminal*" (lambda () (term shell-pop-term-shell))))
 (global-set-key [f8] 'shell-pop)
+(custom-set-variables
+ '(shell-pop-window-size 70)
+ '(shell-pop-window-position "top"))
 
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-primary t)
 
+(setq python-shell-interpreter "ipython"
+    python-shell-interpreter-args "--simple-prompt")
+
+
+
 ;; M-x list-package
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-;(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
 
-(setq python-shell-interpreter "ipython"
-    python-shell-interpreter-args "--simple-prompt -i")
 
 (set-face-attribute 'default nil :height 120)
